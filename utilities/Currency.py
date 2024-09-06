@@ -11,6 +11,9 @@ class Currency:
         self.value = value
         self.type = type
     
+    def __str__(self) -> str:
+        return f"{self.type} {self.value:.2f}"
+
     def converter(self, new_type: str = 'BRL') -> float:
         """Converte um valor monetário com um determinado tipo de moeda para outro tipo de moeda passado como parâmetro (new_type).\n
         Por padrão o novo tipo de moeda é 'BRL' (Real brasileiro).\n
