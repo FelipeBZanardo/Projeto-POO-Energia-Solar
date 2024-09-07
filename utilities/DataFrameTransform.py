@@ -63,6 +63,10 @@ class DataFrameTransform:
     @staticmethod
     def merge_tables():
         pass
+        # TODO
+        # Parte do Álex
+        # Não esquecer do Type hint e da docstring
+        # apagar o 'pass' e todos esses comentários
     
 
 

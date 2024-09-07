@@ -80,7 +80,7 @@ class DataBaseSQLite3:
         cursor = connection.cursor()
         table = cursor.execute(query).fetchmany(n_rows)
         cursor.close()
-        #display(table)
+        display(table)
 
     def delete_database(self):
         """Deleta o banco de dados se o mesmo existir
