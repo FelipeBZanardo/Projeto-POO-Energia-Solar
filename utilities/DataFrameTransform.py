@@ -60,13 +60,5 @@ class DataFrameTransform:
         except (AttributeError, TypeError):
             print(f"Tipo de Dado no atributo 'type_column' inválido!")
     
-    @staticmethod
-    def merge_tables():
-        pass
-        # TODO
-        # Parte do Álex
-        # Não esquecer do Type hint e da docstring
-        # apagar o 'pass' e todos esses comentários
-    
 
 
