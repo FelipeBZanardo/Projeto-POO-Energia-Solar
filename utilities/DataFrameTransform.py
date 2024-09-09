@@ -60,13 +60,60 @@ class DataFrameTransform:
         except (AttributeError, TypeError):
             print(f"Tipo de Dado no atributo 'type_column' inválido!")
     
+
+
     @staticmethod
-    def merge_tables():
-        pass
-        # TODO
-        # Parte do Álex
-        # Não esquecer do Type hint e da docstring
-        # apagar o 'pass' e todos esses comentários
-    
+    def merge_tables(data_frame1: pd.DataFrame, data_frame2: pd.DataFrame, how: str, on: str) -> pd.DataFrame:
+        """Recebe 2 DataFrames e realiza o merge com base em uma coluna comum.
 
+        Args:
+            data_frame1 (pd.DataFrame): O primeiro DataFrame.
+            data_frame2 (pd.DataFrame): O segundo DataFrame.
+            how (str): Tipo de merge ('inner', 'left', 'right', 'outer').
+            on (str): Nome da coluna em comum para fazer o merge.
 
+        Returns:
+            pd.DataFrame: Retorna o DataFrame resultante do merge.
+        """
+
+        data_frame1 = data_frame1.reset_index() 
+        data_frame2 = data_frame2.reset_index()
+
+        # Certificando que a coluna 'on' tem o tipo desejado em ambos os DataFrames
+        dtype = pd.concat([data_frame1[on], data_frame2[on]]).dtype
+        data_frame1[on] = data_frame1[on].astype(dtype)
+        data_frame2[on] = data_frame2[on].astype(dtype)
+
+        df1_keys = data_frame1[on]
+        df2_keys = data_frame2[on]
+
+        if how == 'inner':
+            merge_keys = df1_keys[df1_keys.isin(df2_keys)]
+        elif how == 'left':
+            merge_keys = df1_keys
+        elif how == 'right':
+            merge_keys = df2_keys
+        elif how == 'outer':
+            merge_keys = pd.concat([df1_keys, df2_keys]).drop_duplicates()
+        else:
+            raise ValueError(f"Tipo de merge '{how}' não suportado")
+
+        # Realizando o merge com base nas keys obtidas
+        result_data = []
+        for key in merge_keys:
+            row1 = data_frame1[data_frame1[on] == key].drop('index', axis=1, errors='ignore').iloc[0] if key in df1_keys.values else pd.Series(dtype='object')
+            row2 = data_frame2[data_frame2[on] == key].drop('index', axis=1, errors='ignore').iloc[0] if key in df2_keys.values else pd.Series(dtype='object')
+
+            merged_row = pd.concat([row1, row2.drop(on, errors='ignore')], axis=0)
+            merged_row[on] = key
+            result_data.append(merged_row)
+
+        # Convertendo a lista de dados mesclados de volta em um DataFrame, garantindo que a key especificada em on esteja na primeira posição
+        result_df = pd.DataFrame(result_data).reset_index(drop=True)
+        cols = [on] + [col for col in result_df.columns if col != on]
+        result_df = result_df[cols]
+
+        # Forçando o tipo da coluna 'on' para o tipo original
+        result_df[on] = result_df[on].astype(dtype)
+        
+        return result_df

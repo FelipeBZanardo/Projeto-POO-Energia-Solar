@@ -17,7 +17,7 @@ class Currency:
     def converter(self, new_type: str = 'BRL') -> float:
         """Converte um valor monetário com um determinado tipo de moeda para outro tipo de moeda passado como parâmetro (new_type).\n
         Por padrão o novo tipo de moeda é 'BRL' (Real brasileiro).\n
-        Busca a cotação atual da moeda através da API <https://economia.awesomeapi.com.br/json/last/> e faz o câmbio de valores.
+        Busca a cotação atual da moeda através da API <https://docs.awesomeapi.com.br/api-de-moedas> e faz o câmbio de valores.
 
         Args:
             new_type (str, optional): Novo tipo de moeda no formato string. Defaults to 'BRL'.

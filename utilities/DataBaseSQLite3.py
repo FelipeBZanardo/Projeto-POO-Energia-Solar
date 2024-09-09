@@ -4,7 +4,7 @@ import os
 import pandas as pd
 
 class DataBaseSQLite3:
-    """Classe Responsável pela manipulação de do Banco de Dados SQLite3
+    """Classe Responsável pela manipulação do Banco de Dados SQLite3
     """
     def __init__(self, db_name):
        self.db_name = db_name
